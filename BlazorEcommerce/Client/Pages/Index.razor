@@ -3,12 +3,21 @@
 @page "/{categoryUrl}"
 @inject IProductService productService
 
-<PageTitle>Blazor Shop</PageTitle>
+<PageTitle>Blazor Shöp</PageTitle>
 
-<ProductList />
+@if (SearchText == null && CategoryUrl == null)
+{
+    <FeaturedProducts />
+}
+else
+{
+
+    <ProductList />
+}
 
 
-@code{
+
+@code {
     [Parameter]
     public string? CategoryUrl { get; set; } = null;
     [Parameter]
@@ -16,13 +25,13 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        if(SearchText != null)
+        if (SearchText != null)
         {
             await productService.SearchProducts(SearchText);
         }
         else
         {
-            await productService.GetProducts(CategoryUrl);            
+            await productService.GetProducts(CategoryUrl);
         }
 
     }
