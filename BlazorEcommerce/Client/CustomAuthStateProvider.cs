@@ -43,6 +43,7 @@ namespace BlazorEcommerce.Client
             var state = new AuthenticationState(user);
 
             NotifyAuthenticationStateChanged(Task.FromResult(state));
+
             return state;
         }
 
