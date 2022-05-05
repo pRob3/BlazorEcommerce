@@ -52,7 +52,7 @@
         {
             errorMessage = string.Empty;
 
-            await localStorage.SetItemAsync("authToken", result);
+            await localStorage.SetItemAsync("authToken", result.Data);
             await authenticationStateProvider.GetAuthenticationStateAsync();
 
             navigationManager.NavigateTo(returnUrl);

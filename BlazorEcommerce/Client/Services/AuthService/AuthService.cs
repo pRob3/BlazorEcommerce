@@ -19,6 +19,17 @@ namespace BlazorEcommerce.Client.Services.AuthService
         public async Task<ServiceResponse<bool>> ChangePassword(UserChangePassword request)
         {
             var result = await _http.PostAsJsonAsync("api/auth/change-password", request.Password);
+
+            Console.WriteLine(result);
+            if (!result.IsSuccessStatusCode)
+            {
+                var response = new ServiceResponse<bool>();
+                response.Success = false;
+                response.Message = "Not authorized";
+
+                return response;
+            }
+
             return await result.Content.ReadFromJsonAsync<ServiceResponse<bool>>();
         }
 
