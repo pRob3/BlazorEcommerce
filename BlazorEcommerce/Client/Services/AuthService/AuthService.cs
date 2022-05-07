@@ -9,10 +9,12 @@ namespace BlazorEcommerce.Client.Services.AuthService
     public class AuthService : IAuthService
     {
         private readonly HttpClient _http;
+        private readonly AuthenticationStateProvider _authStateProvider;
 
-        public AuthService(HttpClient http)
+        public AuthService(HttpClient http, AuthenticationStateProvider authStateProvider)
         {
             _http = http;
+            _authStateProvider = authStateProvider;
         }
 
 
@@ -31,6 +33,11 @@ namespace BlazorEcommerce.Client.Services.AuthService
             }
 
             return await result.Content.ReadFromJsonAsync<ServiceResponse<bool>>();
+        }
+
+        public async Task<bool> IsUserAuthenticated()
+        {
+            return (await _authStateProvider.GetAuthenticationStateAsync()).User.Identity.IsAuthenticated;
         }
 
         public async Task<ServiceResponse<string>> Login(UserLogin request)
