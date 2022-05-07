@@ -22,14 +22,6 @@ namespace BlazorEcommerce.Server.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<ServiceResponse<bool>>> PlaceOrder()
-        {
-            var result = await _orderService.PlaceOrder();
-
-            return Ok(result);
-        }
-
         [HttpGet("{orderId}")]
         public async Task<ActionResult<ServiceResponse<OrderDetailsResponseDTO>>> GetOrderDetails(int orderId)
         {
