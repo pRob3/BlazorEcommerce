@@ -21,6 +21,7 @@ namespace BlazorEcommerce.Server.Services.AuthService
         public int GetUserId() => int.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
         public string GetUserEmail() => _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
 
+
         public async Task<ServiceResponse<string>> Login(string email, string password)
         {
             var response = new ServiceResponse<string>();
@@ -101,7 +102,8 @@ namespace BlazorEcommerce.Server.Services.AuthService
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Email)
+                new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.Role, user.Role)
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8
@@ -111,7 +113,7 @@ namespace BlazorEcommerce.Server.Services.AuthService
 
             var token = new JwtSecurityToken(
                     claims: claims,
-                    expires: DateTime.Now.AddDays(1),
+                    expires: DateTime.UtcNow.AddDays(10),
                     signingCredentials: creds);
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);

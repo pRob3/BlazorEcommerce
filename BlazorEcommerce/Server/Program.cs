@@ -3,6 +3,7 @@ global using BlazorEcommerce.Shared.DTOs;
 global using Microsoft.EntityFrameworkCore;
 global using BlazorEcommerce.Server.Data;
 global using BlazorEcommerce.Server.Services.ProductService;
+global using BlazorEcommerce.Server.Services.ProductTypeService;
 global using BlazorEcommerce.Server.Services.CategoryService;
 global using BlazorEcommerce.Server.Services.CartService;
 global using BlazorEcommerce.Server.Services.AuthService;
@@ -60,12 +61,14 @@ builder.Services.AddSwaggerGen(setup =>
 
 
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductTypeService, ProductTypeService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IAddressService, AddressService>();
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -77,7 +80,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 new SymmetricSecurityKey(System.Text.Encoding.UTF8
                 .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
             ValidateIssuer = false,
-            ValidateAudience = false
+            ValidateAudience = false,
+            ValidateLifetime = true
         };
     });
 
